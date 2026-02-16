@@ -83,8 +83,23 @@ def build_mlp(
     mlp = None
 
     # *** START CODE HERE ***
+    modules = []
+
+    # Input Layer
+    modules.append(nn.Linear(input_size, size))
+    modules.append(activation)
+
+    # Hidden Layers
+    for _ in range(n_layers - 1):
+        modules.append(nn.Linear(size, size))
+        modules.append(activation)
+
+    # Output Layer
+    modules.append(nn.Linear(size, output_size))
+    modules.append(output_activation)
     # *** END CODE HERE ***
 
+    mlp = nn.Sequential(*modules)
     return mlp
 
 
@@ -110,4 +125,4 @@ def from_numpy(*args, **kwargs):
 
 
 def to_numpy(tensor):
-    return tensor.to('cpu').detach().numpy()
+    return tensor.to('cpu', copy=True).detach().numpy()
