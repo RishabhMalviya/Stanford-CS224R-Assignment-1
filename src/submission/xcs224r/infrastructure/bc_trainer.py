@@ -210,12 +210,12 @@ class BCTrainer:
         print("\nCollecting data to be used for training...")
 
         # *** START CODE HERE ***
-        # If it's the first iteration of DAgger and expert data exists, only load the expert data to bootstrap the algorithm.
-        if self.params['do_dagger'] and itr == 0 and load_initial_expertdata is not None:
+        # If it's the first iteration only load the expert data to bootstrap the algorithm.
+        if itr == 0:
             with open(load_initial_expertdata, 'rb') as f:
                 paths = pickle.load(f)
             envsteps_this_batch = sum([utils.get_pathlength(path) for path in paths])
-        # Otherwise, collect `params['batch_size']` timesteps from `self.env` with `collect_policy``
+        # Otherwise, collect `params['batch_size']` timesteps from `self.env` with `collect_policy`
         else:
             paths, envsteps_this_batch = utils.sample_trajectories(
                 env=self.env, 

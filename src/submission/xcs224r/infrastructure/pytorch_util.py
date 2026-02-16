@@ -97,9 +97,10 @@ def build_mlp(
     # Output Layer
     modules.append(nn.Linear(size, output_size))
     modules.append(output_activation)
-    # *** END CODE HERE ***
 
     mlp = nn.Sequential(*modules)
+    # *** END CODE HERE ***
+
     return mlp
 
 
@@ -125,4 +126,4 @@ def from_numpy(*args, **kwargs):
 
 
 def to_numpy(tensor):
-    return tensor.to('cpu', copy=True).detach().numpy()
+    return tensor.to('cpu').detach().numpy()
