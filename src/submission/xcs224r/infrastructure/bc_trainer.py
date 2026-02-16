@@ -210,6 +210,19 @@ class BCTrainer:
         print("\nCollecting data to be used for training...")
 
         # *** START CODE HERE ***
+        # If it's the first iteration of DAgger and expert data exists, only load the expert data to bootstrap the algorithm.
+        if self.params['do_dagger'] and itr == 0 and load_initial_expertdata is not None:
+            with open(load_initial_expertdata, 'rb') as f:
+                paths = pickle.load(f)
+            envsteps_this_batch = sum([utils.get_pathlength(path) for path in paths])
+        # Otherwise, collect `params['batch_size']` timesteps from `self.env` with `collect_policy``
+        else:
+            paths, envsteps_this_batch = utils.sample_trajectories(
+                env=self.env, 
+                policy=collect_policy, 
+                min_timesteps_per_batch=self.params['batch_size'], 
+                max_path_length=self.params['ep_len']
+            )
         # *** END CODE HERE ***
 
         # collect more rollouts with the same policy, to be saved as videos in tensorboard
@@ -237,6 +250,7 @@ class BCTrainer:
             ob_batch, ac_batch, re_batch, next_ob_batch, terminal_batch = None, None, None, None, None
 
             # *** START CODE HERE ***
+            ob_batch, ac_batch = self.agent.sample(self.params['train_batch_size'])
             # *** END CODE HERE ***
 
             # TODO use the sampled data to train an agent
@@ -246,7 +260,10 @@ class BCTrainer:
             train_log = None
 
             # *** START CODE HERE ***
+            train_log = self.agent.train(ob_batch, ac_batch)
+            all_logs.append(train_log)
             # *** END CODE HERE ***
+
         return all_logs
 
     def do_relabel_with_expert(self, expert_policy, paths):
@@ -264,6 +281,9 @@ class BCTrainer:
         # and replace paths[i]["action"] with these expert labels
 
         # *** START CODE HERE ***
+        for path in paths:
+            expert_actions = expert_policy.get_action(path['observation'])
+            path['action'] = expert_actions
         # *** END CODE HERE ***
 
         return paths

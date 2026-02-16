@@ -107,6 +107,15 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
         # TODO return the action that the policy prescribes
 
         # *** START CODE HERE ***
+        observation = ptu.from_numpy(observation.astype(np.float32))
+        action_dist = self(observation)
+
+        if self.training:
+            action = action_dist.rsample()
+        else:
+            action = action_dist.sample()
+
+        return ptu.to_numpy(action)
         # *** END CODE HERE ***
 
     def forward(self, observation: torch.FloatTensor) -> Any:
@@ -133,7 +142,14 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
         """
 
         # *** START CODE HERE ***
+        action_dist = distributions.MultivariateNormal(
+            loc=self.mean_net(observation), 
+            covariance_matrix=torch.diag(torch.exp(self.logstd)**2)
+        )
+
+        return action_dist
         # *** END CODE HERE ***
+        
 
     def update(self, observations, actions):
         """
@@ -148,4 +164,16 @@ class MLPPolicySL(BasePolicy, nn.Module, metaclass=abc.ABCMeta):
         # you need to backpropagate the gradient and step the optimizer.
 
         # *** START CODE HERE ***
+        observations = ptu.from_numpy(observations.astype(np.float32))
+        actions = ptu.from_numpy(actions.astype(np.float32))
+
+        action_dist = self(observations)
+        loss = F.mse_loss(action_dist.rsample(), actions)
+        
+        self.optimizer.zero_grad()
+        loss.backward()
+
+        self.optimizer.step()
+
+        return {'Training Loss': ptu.to_numpy(loss)}
         # *** END CODE HERE ***
