@@ -129,13 +129,16 @@ class ReplayBuffer():
         ## Note that rews, next_obs, and terminals are not used for BC
 
         # *** START CODE HERE ***
-        permuted_indices = np.random.permutation(range(self.obs.shape[-1]))
+        permuted_indices = np.random.permutation(range(self.obs.shape[0]))
 
         selected_indices = permuted_indices[-batch_size:]
 
         return (
             self.obs[selected_indices],
-            self.acs[selected_indices]
+            self.acs[selected_indices],
+            self.rews[selected_indices],
+            self.next_obs[selected_indices],
+            self.terminals[selected_indices],
         )
         # *** END CODE HERE ***
 

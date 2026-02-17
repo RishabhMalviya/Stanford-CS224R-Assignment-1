@@ -115,7 +115,7 @@ def sample_n_trajectories(env, policy, ntraj, max_path_length, render=False):
         path = sample_trajectory(env, policy, max_path_length, render=render)
         paths.append(path)
 
-        return paths
+    return paths
     # *** END CODE HERE ***
 
 ############################################
