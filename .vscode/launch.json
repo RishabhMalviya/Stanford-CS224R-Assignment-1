@@ -1,0 +1,102 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BC Ant-v4",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run_hw1.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--expert_policy_file", "xcs224r/policies/experts/Ant.pkl",
+                "--env_name", "Ant-v4",
+                "--exp_name", "bc_ant",
+                "--video_log_freq", "-1",
+                "--expert_data", "xcs224r/expert_data/expert_data_Ant-v4.pkl",
+                "--num_agent_train_steps_per_iter", "10000",
+                "--train_batch_size", "100",
+                "--eval_batch_size", "5000",
+                "--n_layers", "2",
+                "--size", "64",
+                "--seed", "42",
+                "--no_gpu"
+            ],
+            "cwd": "${workspaceFolder}/src/submission/"
+        },
+        {
+            "name": "BC HalfCheetah-v4",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run_hw1.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--expert_policy_file", "xcs224r/policies/experts/HalfCheetah.pkl",
+                "--env_name", "HalfCheetah-v4",
+                "--exp_name", "bc_halfcheetah",
+                "--video_log_freq", "-1",
+                "--expert_data", "xcs224r/expert_data/expert_data_HalfCheetah-v4.pkl",
+                "--num_agent_train_steps_per_iter", "10000",
+                "--train_batch_size", "100",
+                "--eval_batch_size", "5000",
+                "--n_layers", "2",
+                "--size", "8",
+                "--seed", "42",
+                "--no_gpu"
+            ],
+            "cwd": "${workspaceFolder}/src/submission/"
+        },
+        {
+            "name": "DAgger Ant-v4",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run_hw1.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--expert_policy_file", "xcs224r/policies/experts/Ant.pkl",
+                "--env_name", "Ant-v4",
+                "--exp_name", "dagger_ant",
+                "--video_log_freq", "-1",
+                "--n_iter", "10",
+                "--expert_data", "xcs224r/expert_data/expert_data_Ant-v4.pkl",
+                "--num_agent_train_steps_per_iter", "1000",
+                "--batch_size", "10000",
+                "--train_batch_size", "100",
+                "--eval_batch_size", "5000",
+                "--n_layers", "2",
+                "--size", "64",
+                "--seed", "0",
+                "--no_gpu",
+                "--do_dagger"
+            ],
+            "cwd": "${workspaceFolder}/src/submission/"
+        },
+        {
+            "name": "DAgger HalfCheetah-v4",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run_hw1.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--expert_policy_file", "xcs224r/policies/experts/HalfCheetah.pkl",
+                "--env_name", "HalfCheetah-v4",
+                "--exp_name", "dagger_halfcheetah",
+                "--video_log_freq", "-1",
+                "--n_iter", "10",
+                "--expert_data", "xcs224r/expert_data/expert_data_HalfCheetah-v4.pkl",
+                "--num_agent_train_steps_per_iter", "1000",
+                "--batch_size", "10000",
+                "--train_batch_size", "100",
+                "--eval_batch_size", "5000",
+                "--n_layers", "2",
+                "--size", "64",
+                "--seed", "0",
+                "--no_gpu",
+                "--do_dagger"
+            ],
+            "cwd": "${workspaceFolder}/src/submission/"
+        }
+    ]
+}
