@@ -131,7 +131,7 @@ class ReplayBuffer():
         # *** START CODE HERE ***
         permuted_indices = np.random.permutation(range(self.obs.shape[0]))
 
-        selected_indices = permuted_indices[-batch_size:]
+        selected_indices = permuted_indices[:batch_size]
 
         return (
             self.obs[selected_indices],
