@@ -31,8 +31,49 @@ instructions to regenerate this handout with your typeset \LaTeX{} solutions.
 
 % <SCPD_SUBMISSION_TAG>_1b
 \begin{answer}
-  % ### START CODE HERE ###
-  % ### END CODE HERE ###
+  These are the results of Ant-v4 and HalfCheetah-v4 environments. The average return is the mean of the returns obtained from evaluating the trained policy on multiple episodes (total 5000 timesteps), while the standard deviation of return indicates the variability of returns across those episodes:
+
+  \begin{table}[h]
+    \begin{tabular}{|l|c|c|}
+      \hline
+      Environment & Eval\_AverageReturn & Eval\_StdReturn \\
+      \hline
+      Ant-v4 & 4601.469727 & 98.333435 \\
+      HalfCheetah-v4 & 3833.641357 & 61.327606 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+    These were the relevant hyperparameters for Ant-v4 (the only training data used was the 2000 timesteps of experience in the provided expert data):
+  \begin{table}[h]
+    \begin{tabular}{|l|c|}
+      \hline
+      Hyperparameter & Value \\
+      \hline
+      num\_agent\_train\_steps\_per\_iter & 10000 \\
+      train\_batch\_size & 100 \\
+      eval\_batch\_size & 5000 \\
+      n\_layers & 2 \\
+      size & 64 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+  These were the relevant hyperparameters for HalfCheetah-v4 (the only training data used was the 2000 timesteps of experience in the provided expert data):
+  \begin{table}[h]
+    \begin{tabular}{|l|c|}
+      \hline
+      Hyperparameter & Value \\
+      \hline
+      num\_agent\_train\_steps\_per\_iter & 10000 \\
+      train\_batch\_size & 100 \\
+      eval\_batch\_size & 5000 \\
+      n\_layers & 2 \\
+      size & 8 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
 \end{answer}
 % <SCPD_SUBMISSION_TAG>_1b
 \clearpage
@@ -43,8 +84,61 @@ instructions to regenerate this handout with your typeset \LaTeX{} solutions.
 
 % <SCPD_SUBMISSION_TAG>_1c
 \begin{answer}
-  % ### START CODE HERE ###
-  % ### END CODE HERE ###
+  I did a hyperparameter sweep for the `num\_agent\_train\_steps\_per\_iter` hyperparameter in the Ant-v4 environment.
+  My motivation was that in Behaviour Cloning, that was the only variable that really had any effect on the algorithm's performance.
+  I wanted to see if spamming higher and higher values for this hyperparameter would lead to better and better performance, or if we would see diminishing returns at some point.
+
+  These were the results of varying the `num\_agent\_train\_steps\_per\_iter` hyperparameter for the Ant-v4 environment:
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{"plots/Ant-v4\_HPSweep.png"}
+  \end{figure}
+
+  \vspace{0.5cm}
+
+  The rest of the hyperparameters were kept constant:
+  \begin{table}[h]
+    \begin{tabular}{|l|c|}
+      \hline
+      Hyperparameter & Value \\
+      \hline
+      train\_batch\_size & 100 \\
+      eval\_batch\_size & 5000 \\
+      n\_layers & 2 \\
+      size & 64 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+  \newpage
+
+  I also did a hyperparameter sweep for the `size` hyperparameter in the HalfCheetah-v4 environment.
+  I noticed that the observation size for the HalfCheetah-v4 environment was 17, which was much smaller than for Ant-v4 environment's 111.
+  Because of this, I suspected that a smaller neural network would be able to learn a good enough policy for HalfCheetah-v4, and that we would see diminishing returns with larger networks.
+  I suspected that very large networks would perform even more poorly because they would overfit to the 2000 timesteps observed in the expert data (assuming we would see sufficiently different data in the evaluation runs).
+
+  These were the results of varying the `size` hyperparameter for the HalfCheetah-v4 environment:
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{"plots/HalfCheetah-v4\_HPSweep.png"}
+  \end{figure}
+
+  \vspace{0.5cm}
+  
+  The rest of the hyperparameters were kept constant:
+  \begin{table}[h]
+    \begin{tabular}{|l|c|}
+      \hline
+      Hyperparameter & Value \\
+      \hline
+      num\_agent\_train\_steps\_per\_iter & 10000 \\
+      train\_batch\_size & 100 \\
+      eval\_batch\_size & 5000 \\
+      n\_layers & 2 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
 \end{answer}
 % <SCPD_SUBMISSION_TAG>_1c
 \clearpage
@@ -56,8 +150,52 @@ instructions to regenerate this handout with your typeset \LaTeX{} solutions.
 
 % <SCPD_SUBMISSION_TAG>_2b
 \begin{answer}
-  % ### START CODE HERE ###
-  % ### END CODE HERE ###
+  These are the results for Ant-v4:
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{"plots/Ant-v4\_DAgger.png"}
+  \end{figure}
+
+  \begin{table}[h]
+    \begin{tabular}{|l|c|}
+      \hline
+      Hyperparameter & Value \\
+      \hline
+      n\_iter & 10 \\
+      num\_agent\_train\_steps\_per\_iter & 1000 \\
+      batch\_size & 10000 \\
+      train\_batch\_size & 100 \\
+      eval\_batch\_size & 5000 \\
+      n\_layers & 2 \\
+      size & 64 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+  \newpage
+
+  These are the results for HalfCheetah-v4:
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{"plots/HalfCheetah-v4\_DAgger.png"}
+  \end{figure}
+
+  \begin{table}[h]
+    \begin{tabular}{|l|c|}
+      \hline
+      Hyperparameter & Value \\
+      \hline
+      n\_iter & 10 \\
+      num\_agent\_train\_steps\_per\_iter & 1000 \\
+      batch\_size & 10000 \\
+      train\_batch\_size & 100 \\
+      eval\_batch\_size & 5000 \\
+      n\_layers & 2 \\
+      size & 64 \\
+      \hline
+    \end{tabular}
+  \end{table}
+
 \end{answer}
 % <SCPD_SUBMISSION_TAG>_2b
 \clearpage
